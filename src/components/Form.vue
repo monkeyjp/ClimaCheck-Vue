@@ -9,6 +9,8 @@ const search = reactive({
 
 const error = ref("");
 
+const emit = defineEmits(["get-weather"]);
+
 const countries = [
   { code: "CO", name: "Colombia" },
   { code: "CR", name: "Costa Rica" },
@@ -25,6 +27,7 @@ const checkWeather = () => {
     return;
   }
   error.value = "";
+  emit("get-weather", search);
 };
 </script>
 
