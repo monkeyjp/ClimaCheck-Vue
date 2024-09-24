@@ -6,10 +6,13 @@ export default function useWeather() {
 
     const loading = ref(false)
 
+    const error = ref("")
+
     const getWeather = async ({ city, country }) => {
         const key = import.meta.env.VITE_API_KEY
         loading.value = true
         weather.value = {}
+        error.value = ""
         try {
             const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${country}&limit=1&appid=${key}`
             const { data } = await axios(url)
@@ -17,9 +20,8 @@ export default function useWeather() {
             const urlWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}&units=metric`
             const { data: result } = await axios(urlWeather)
             weather.value = result
-        } catch (error) {
-            console.log(error);
-
+        } catch (err) {
+            error.value = "City not found"
         } finally {
             loading.value = false
         }
@@ -34,6 +36,7 @@ export default function useWeather() {
         getWeather,
         weather,
         showWeather,
-        loading
+        loading,
+        error
     }
 }
